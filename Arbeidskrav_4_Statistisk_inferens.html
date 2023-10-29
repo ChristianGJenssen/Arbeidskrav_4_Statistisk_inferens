@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>arbeidskrav 4</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/quarto.js"></script>
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/popper.min.js"></script>
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Arbeidskrav_4_Statistisk_inferens_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Arbeidskrav_4_Statistisk_inferens_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Arbeidskrav_4_Statistisk_inferens_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Arbeidskrav_4_Statistisk_inferens_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">arbeidskrav 4</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="quarto" class="level2">
+<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000000</span>, <span class="at">mean =</span> <span class="fl">1.5</span>, <span class="at">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>samp1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="fu">sample</span>(population, <span class="dv">8</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>samp2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="fu">sample</span>(population, <span class="dv">40</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> samp1)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> samp2)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ 1, data = samp1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.5322 -1.2523 -0.0883  1.3540  4.8692 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    1.840      1.251    1.47    0.185
+
+Residual standard error: 3.539 on 7 degrees of freedom</code></pre>
+</div>
+</div>
+<p><strong>Spørsmål 1 - Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)</strong></p>
+<p>I denne oppgaven gjennomførte vi simuleringer og analyserte resultatene av to regresjonsmodeller, betegnet som m1 og m2. Formålet med analysen var å estimere og tolke populasjonsforskjeller mellom to behandlinger i en overkrysningsstudie, der deltakerne gjennomgikk begge behandlingene. Vi simulerte en populasjon på én million verdier med en gjennomsnittsverdi på 1,5 og et standardavvik på 3,0.</p>
+<p>Regresjonsmodell m1 For regresjonsmodell m1, som hadde en utvalgsstørrelse på 8, ble følgende resultater observert: Estimat (Koeffisient): Estimatet for skjæringspunktet i m1 var 1,84. Standardfeil (SE): Standardfeilen for estimatet i m1 var 1,25. t-verdi: t-verdien i m1 var 1,47. p-verdi: p-verdien knyttet til estimatet i m1 var 0,185.</p>
+<p>Disse resultatene indikerer at i modell m1 ble skjæringspunktet, som representerer gjennomsnittsverdien av den avhengige variabelen, estimert til 1,84. t-verdien antyder en liten forskjell mellom de to behandlingene. Imidlertid var forskjellen ikke statistisk signifikant (p &gt; 0,05).</p>
+<p>Regresjonsmodell m2 For regresjonsmodell m2, som hadde en utvalgsstørrelse på 40, ble følgende resultater observert: Estimat (Koeffisient): Estimatet for skjæringspunktet i m2 var 1,64. Standardfeil (SE): Standardfeilen for estimatet i m2 var 0,47. t-verdi: t-verdien i m2 var 3,51. p-verdi: p-verdien knyttet til estimatet i m2 var 0,001. I tilfellet med modell m2 ble skjæringspunktet estimert til å være 1,64. Den mindre standardfeilen og betydelig større t-verdi (3,51) i m2 antyder en større forskjell mellom de to behandlingene. Videre var forskjellene statistisk signifikante (p &lt; 0,05).</p>
+<p>Oppsummert viser regresjonsanalysen at utvalgsstørrelse har en betydelig innvirkning på resultatene. En større utvalgsstørrelse, som vist i m2, ga mer presise estimater med en høyere grad av statistisk signifikans, sammenlignet med den mindre utvalgsstørrelsen i m1. Disse funnene understreker betydningen av utvalgsstørrelsen i statistiske analyser og evnen til å trekke reliable slutninger fra dataene.</p>
+<p><strong>Spørsmål 2 - Discuss what contributes to the different results in the two studies (m1 and m2)</strong></p>
+<p>Resultatene fra de to studiene, m1 og m2, viser tydelige forskjeller i estimerte verdier og deres statistiske signifikans. Flere faktorer kan bidra til disse forskjellene:</p>
+<p>Utvalgsstørrelse En av de mest åpenbare forskjellene mellom m1 og m2 er utvalgsstørrelsen. M1 hadde et betydelig mindre utvalg (n = 8), sammenlignet med m2 (n = 40). En større utvalgsstørrelse gir vanligvis mer nøyaktige estimater og høyere statistisk styrke. Dette øker sannsynligheten for å påvise statistisk signifikante forskjeller. I m2 gir den større utvalgsstørrelsen mer reliable resultater, mens m1 preges av større grad av usikkerhet som følge av den begrensede utvalgsstørrelsen.</p>
+<p>Standardfeil (SE) M2 har en betydelig mindre standardfeil enn m1. Dette skyldes igjen den økte utvalgsstørrelsen. En mindre standardfeil indikerer større presisjon i estimatene. I m1, med sin større standardfeil, er estimatet mindre reliabelt og nøyaktig.</p>
+<p>t-verdi og p-verdi t-verdiene og p-verdiene er sterkt påvirket av både utvalgsstørrelsen og standardfeilen. I m2 har den større utvalgsstørrelsen og mindre standardfeilen resultert i en vesentlig høyere t-verdi og en svært lav p-verdi, som indikerer en høy grad av statistisk signifikans. I kontrast til dette har m1, med sin begrensede utvalgsstørrelse og større standardfeil, en lavere t-verdi og en p-verdi som indikerer manglende statistisk signifikans.</p>
+<p>Estimat (Koeffisient) Forskjellen i estimatene (koeffisientene) i m1 og m2 indikerer også betydelige endringer i gjennomsnittsverdiene mellom de to behandlingene. Dette er direkte relatert til utvalgsstørrelsen og nøyaktigheten til estimatene.</p>
+<p>I konklusjon, de viktigste faktorene som bidrar til de ulike resultatene i de to studiene (m1 og m2), er utvalgsstørrelsen og standardfeilen. En større utvalgsstørrelse gir mer nøyaktige estimater og øker sjansen for å oppdage statistisk signifikante forskjeller. Derfor bør utvalgsstørrelsen vurderes nøye i enhver statistisk analyse for å sikre reliable resultater.</p>
+<p><strong>Spørsmål 3 - Why do we use the shaded area in the lower and upper tail of the t-distribution</strong></p>
+<p>I statistisk analyse benyttes det ofte t-fordeling for å utføre hypotesetesting og for å vurdere statistisk signifikans. Figuren illustrerer sannsynlighetsfordelingen for t-verdier. Skyggeområdet i både den nedre og øvre halen av t-fordelingen representerer områder der vi gjennomførte hypotesetesting og vurderer signifikans. Her er hvorfor vi brukte disse skyggeområdene:</p>
+<p>Hypotesetesting I hypotesetesting sammenligner vi normalt en teststatistikk, som en t-verdi, med en kritisk verdi for å avgjøre om vi skal avvise eller ikke avvise nullhypotesen. Nullhypotesen antar at det ikke er noen signifikant forskjell eller effekt, mens alternativhypotesen antyder en signifikant forskjell. Skyggeområdet representerer de områdene i t-fordelingen der vi vil avvise nullhypotesen, gitt at teststatistikken faller innenfor disse områdene. Med andre ord, om teststatistikken er ekstrem nok til å falle i det øvre eller nedre haleområdet, tolker vi dette som evidens for at det er en signifikant effekt.</p>
+<p>Signifikansnivå og p-verdi: Skyggeområdene i t-fordelingen er også knyttet til valget av signifikansnivå (alfa-nivå) i hypotesetesting. Eksempelvis, om signifikansnivået er satt til 0,05 (5 %), vil skyggeområdene i hver hale representerer de ekstreme 2,5 % av t-verdiene i den øvre halen og de lavere 2,5% i den nedre halen. p-verdien, som er beregnet ut fra teststatistikken, sammenligner hvor godt testresultatene sammenfaller med disse skyggeområdene. En lav p-verdi (mindre enn alfa-nivået) indikerer statistisk signifikans og støtter avvisning av nullhypotesen.</p>
+<p>To-sidige tester For noen hypotesetester er det nødvendig å bruke både den øvre og den nedre halen av t-fordelingen, for eksempel i tosidige tester. I tosidige tester en etter ekstreme verdier i begge retninger av fordelingen. De to skyggområdene representerer disse to retningene, og vi sammenligner teststatistikken med dem for å vurdere signifikans i begge retninger.</p>
+<p>Sammenfattende brukes skyggeområdene i t-fordelingen for å veilede vurderingen av hypoteser og signifikans. De indikerer de ekstreme regionene der vi avviser nullhypotesen når teststatistikken er ekstrem nok. Valget av alfa-nivå sammen med dette skyggeområde bidrar til en konsistent og objektiv tilnærming til hypotesetesting i statistiske analyser.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>results_8 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">estimate =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">se =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pval =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n =</span> <span class="dv">8</span>)  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>results_40 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">estimate =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">se =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pval =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>), </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n =</span> <span class="dv">40</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Draw a sample </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  samp1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="fu">sample</span>(population, <span class="dv">8</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  samp2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="fu">sample</span>(population, <span class="dv">40</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Model the data</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> samp1)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> samp2)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract values from the models</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  results_8[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m1))[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  results_8[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m1))[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  results_8[i, <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m1))[<span class="dv">1</span>, <span class="dv">4</span>]</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  results_40[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m2))[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  results_40[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m2))[<span class="dv">1</span>, <span class="dv">2</span>]</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  results_40[i, <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m2))[<span class="dv">1</span>, <span class="dv">4</span>]</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results_8, results_40)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Spørsmål 4 - Calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?</strong></p>
+<p>For hvert av de to studiestørrelsene (n = 8 og n = 40), har vi beregnet standardavviket for estimatvariabelen og gjennomsnittet for standardfeilvariabelen. Følgende resultater ble observert: Standardavviket for estimatvariabelen (n = 8): 1,04 Standardavviket for estimatvariabelen (n = 40): 0,48 Gjennomsnittet for standardfeilvariabelen (n = 8): 1,04 Gjennomsnittlig standardfeilvariabelen (n = 40): 0,47</p>
+<p>Standardavvikene for estimatene er svært like for de to forskjellige studiestørrelsene, til tross for at de beregner estimatene fra ulike mengder data. Dette kan forklares ved at estimatene er basert på en stor nok populasjon (én million verdier) og at tilfeldige variasjoner i utvalgene kompenseres når det tas mange utvalg. Med andre ord, estimatene er konsistente, uavhengig av utvalgsstørrelsen.</p>
+<p>Standardfeil kan defineres som et mål på usikkerheten eller variabiliteten i et estimat. Når vi ser på resultatene her, ser vi at gjennomsnittlig standardfeil er relativt lik for både n = 8 og n = 40, noe som indikerer at usikkerheten i estimatene er relativt konstant, uavhengig av studiestørrelsen. Dette er en viktig egenskap ved standardfeil, ettersom det gir oss en idé om hvor nøyaktige eller presise våre estimater er. Når standardfeilen er lav, indikerer det en høy grad av presisjon i estimatene, mens høy standardfeil indikerer større usikkerhet. I dette tilfellet, til tross for forskjellige studiestørrelser, er standardfeilen relativt lik, noe som tyder på en konsekvent grad av presisjon i estimatene.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Histogram</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(pval)) <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Arbeidskrav_4_Statistisk_inferens_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pval <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(n) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">sig_results =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+      n sig_results
+  &lt;dbl&gt;       &lt;dbl&gt;
+1     8       0.227
+2    40       0.865</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">d =</span> <span class="fl">1.5</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">type =</span> <span class="st">"one.sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     One-sample t test power calculation 
+
+              n = 40
+              d = 0.5
+      sig.level = 0.05
+          power = 0.8693981
+    alternative = two.sided</code></pre>
+</div>
+</div>
+<p><strong>Spørsmål 5 - Create a histogram of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?</strong></p>
+<p>Histogram for n = 8 Histogrammet viser en fordeling der de fleste p-verdiene er relativt høye, og det er en tendens til at de konsentrerer seg rundt verdier nær 1. Dette indikerer at for studiestørrelsen n = 8, er p-verdiene hovedsakelig høye, noe som betyr at resultatene har begrenset statistisk signifikans. Effekten av behandlingen kan derfor være vanskelig å påvise med denne studiestørrelsen.</p>
+<p>Histogram for n = 40 I dette histogrammet er fordelingen av p-verdiene annerledes. De fleste p-verdiene er nå lavere, og de er konsentrert rundt verdier nær 0. Dette indikerer at for studiestørrelsen n = 40, har resultatene en tendens til å ha lavere p-verdier, hvilket antyder at de har større statistisk signifikans. Effekten av behandlingen er derfor lettere å påvise med denne studiestørrelsen.</p>
+<p>Histogrammene av p-verdiene illustrerer effekten av studiestørrelsen på statistisk styrke. Med en større studiestørrelse (n = 40), har analysen større styrke til å oppdage effekten. Som følge av dette gir den lavere p-verdier som indikerer større statistisk signifikans. Med en mindre studiestørrelse (n = 8), er analysen mindre i stand til å påvise effekten. Videre resulterer dette i høyere p-verdier og begrenset statistisk signifikans. Dette underbygger viktigheten av å velge riktig studiestørrelse for å oppnå reliable og signifikante resultater i statistiske analyser.</p>
+<p><strong>Spørsmål 6 - Calculate the number of studies from each sample size that declare a statistically significant effect (specify a threshold for your significance level)</strong></p>
+<p>For studiestørrelse n = 8: Antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05 var 42.</p>
+<p>For studiestørrelse n = 40: Antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05 var 54.</p>
+<p>Dette betyr at 42 studier med en studiestørrelse på 8, samt 54 studier med en studiestørrelse på 40 viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Utreging av hvor mange er innafor alpha</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>significant_studies_8 <span class="ot">&lt;-</span> <span class="fu">sum</span>(results_8<span class="sc">$</span>pval <span class="sc">&lt;=</span> alpha)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>significant_studies_40 <span class="ot">&lt;-</span> <span class="fu">sum</span>(results_40<span class="sc">$</span>pval <span class="sc">&lt;=</span> alpha)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of significant studies with n=8:"</span>, significant_studies_8, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of significant studies with n=8: 227 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of significant studies with n=40:"</span>, significant_studies_40, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of significant studies with n=40: 865 </code></pre>
+</div>
+</div>
+<p><strong>Spørsmål 7 - Using the pwr package, calculate the power of a one-sample t-test, with an effect size of 1.5/3, your specified significance level, and sample sizes 8 and 40. Explain the results in the light of your simulations</strong></p>
+<p>Statistisk styrke for n = 8 For n = 8 var den statistiske styrken 0,23, noe som betyr at det er en 23 % sjanse for å observere en signifikant effekt med den angitte effektstørrelsen (1,5/3), signifikansnivået 0,05 og en studiestørrelse på 8. Dette indikerer at med en studiestørrelse på 8, er sannsynligheten for å oppdage effekten relativt lav, og den statistiske styrken er begrenset.</p>
+<p>Statistisk styrke for n = 8 For n = 8 var den statistiske styrken 0,87, som betyr at det er en høy sannsynlighet (87 %) for å observere en signifikant effekt med den angitte effektstørrelsen, signifikansnivået 0,05 og en studiestørrelse på 40. Dette indikerer at med en større studiestørrelse på 40, er sannsynligheten for å oppdage effekten betydelig høyere, og den statiske styrken er derfor sterk.</p>
+<p>Resultatene av styrkeberegningen er i tråd med simuleringene. Med en liten studiestørrelse (n = 8), er den statistiske styrken begrenset, og det er en lav sannsynlighet for å oppdage effekten. Dette er i tråd med observasjonen av høye p-verdier og begrenset statistisk signifikans i simuleringene med n = 8. Med en større studiestørrelse (n = 40), øker den statistiske styrken betydelig, og det er en høy sannsynlighet for å oppdage effekten. Dette er i samsvar med simuleringene som viste lavere p-verdier og økt statistisk signifikans for n = 40. Studiestørrelsen spiller dermed en viktig rolle i å påvirke statistisk styrke og evnen til å oppdage statistisk signifikante effekter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard deviation and average of the se variable</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>std_dev_est_8 <span class="ot">&lt;-</span> <span class="fu">sd</span>(results_8<span class="sc">$</span>estimate)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>std_dev_est_40 <span class="ot">&lt;-</span> <span class="fu">sd</span>(results_40<span class="sc">$</span>estimate)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>avg_se_8 <span class="ot">&lt;-</span> <span class="fu">mean</span>(results_8<span class="sc">$</span>se)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>avg_se_40 <span class="ot">&lt;-</span> <span class="fu">mean</span>(results_40<span class="sc">$</span>se)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Standard Deviation of Estimate (n=8):"</span>, std_dev_est_8, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Standard Deviation of Estimate (n=8): 1.070843 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Standard Deviation of Estimate (n=40):"</span>, std_dev_est_40, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Standard Deviation of Estimate (n=40): 0.4838475 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Average SE (n=8):"</span>, avg_se_8, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average SE (n=8): 1.021374 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Average SE (n=40):"</span>, avg_se_40, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average SE (n=40): 0.4696954 </code></pre>
+</div>
+</div>
+<p><strong>Spørsmål 8 - With a significance level of 5%, how many studies would give you a “false positive” result if you did many repeated studies?</strong></p>
+<p>Et signifikansnivå (alfa) på 5 % indikerer at vi er villige til å akseptere en feilmargin på 5 % for falske positive resultater. Med andre ord, det er en sjanse på 5% for å konkludere med at det er en effekt når det faktisk ikke er noen effekt (falsk positiv).</p>
+<p>I våre simuleringer med n = 8 og n = 40, har vi allerede beregnet antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 5 %. For n = 8 var det 42 studier, og for n = 40 var det 54 studier.</p>
+<p>Med et signifikansnivå på 5 %, hvis vi utførte mange gjentatte studier, ville 42 for n = 8, samt 54 av n = 40 gi oss falske positive resultater. Dette er antallet studier som feilaktig konkluderer med en signifikant effekt når det faktisk ikke er noen effekt. Det er viktig å være oppmerksom på at valget av signifikansnivå på 5 % innebærer aksept av en viss sjanse for falske positive resultater.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

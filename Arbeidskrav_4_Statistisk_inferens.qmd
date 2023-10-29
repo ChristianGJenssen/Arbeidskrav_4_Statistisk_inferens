@@ -1,13 +1,23 @@
 ---
-title: "arbeidskrav 4"
+title: "arbeidskrav 4 Drawing inference from statistical models, and statistical power"
 format: html
 editor: visual
+author: Christian G. Jenssen, Marius Bjekeset, Oliver Bottolfs, Sivert Solheim
 ---
 
 ## Quarto
 
 ```{r}
+#| echo: false
+#| message: false
+
 library(tidyverse)
+library(pwr)
+library(dplyr)
+```
+
+```{r}
+
 
 set.seed(1)
 population <- rnorm(1000000, mean = 1.5, sd = 3)
@@ -24,8 +34,47 @@ m2 <- lm(y ~ 1, data = samp2)
 summary(m1)
 ```
 
+**Spørsmål 1 - Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)**
+
+I denne oppgaven gjennomførte vi simuleringer og analyserte resultatene av to regresjonsmodeller, betegnet som m1 og m2. Formålet med analysen var å estimere og tolke populasjonsforskjeller mellom to behandlinger i en overkrysningsstudie, der deltakerne gjennomgikk begge behandlingene. Vi simulerte en populasjon på én million verdier med en gjennomsnittsverdi på 1,5 og et standardavvik på 3,0.
+
+Regresjonsmodell m1 For regresjonsmodell m1, som hadde en utvalgsstørrelse på 8, ble følgende resultater observert: Estimat (Koeffisient): Estimatet for skjæringspunktet i m1 var 1,84. Standardfeil (SE): Standardfeilen for estimatet i m1 var 1,25. t-verdi: t-verdien i m1 var 1,47. p-verdi: p-verdien knyttet til estimatet i m1 var 0,185.
+
+Disse resultatene indikerer at i modell m1 ble skjæringspunktet, som representerer gjennomsnittsverdien av den avhengige variabelen, estimert til 1,84. t-verdien antyder en liten forskjell mellom de to behandlingene. Imidlertid var forskjellen ikke statistisk signifikant (p \> 0,05).
+
+Regresjonsmodell m2 For regresjonsmodell m2, som hadde en utvalgsstørrelse på 40, ble følgende resultater observert: Estimat (Koeffisient): Estimatet for skjæringspunktet i m2 var 1,64. Standardfeil (SE): Standardfeilen for estimatet i m2 var 0,47. t-verdi: t-verdien i m2 var 3,51. p-verdi: p-verdien knyttet til estimatet i m2 var 0,001. I tilfellet med modell m2 ble skjæringspunktet estimert til å være 1,64. Den mindre standardfeilen og betydelig større t-verdi (3,51) i m2 antyder en større forskjell mellom de to behandlingene. Videre var forskjellene statistisk signifikante (p \< 0,05).
+
+Oppsummert viser regresjonsanalysen at utvalgsstørrelse har en betydelig innvirkning på resultatene. En større utvalgsstørrelse, som vist i m2, ga mer presise estimater med en høyere grad av statistisk signifikans, sammenlignet med den mindre utvalgsstørrelsen i m1. Disse funnene understreker betydningen av utvalgsstørrelsen i statistiske analyser og evnen til å trekke reliable slutninger fra dataene.
+
+**Spørsmål 2 - Discuss what contributes to the different results in the two studies (m1 and m2)**
+
+Resultatene fra de to studiene, m1 og m2, viser tydelige forskjeller i estimerte verdier og deres statistiske signifikans. Flere faktorer kan bidra til disse forskjellene:
+
+Utvalgsstørrelse En av de mest åpenbare forskjellene mellom m1 og m2 er utvalgsstørrelsen. M1 hadde et betydelig mindre utvalg (n = 8), sammenlignet med m2 (n = 40). En større utvalgsstørrelse gir vanligvis mer nøyaktige estimater og høyere statistisk styrke. Dette øker sannsynligheten for å påvise statistisk signifikante forskjeller. I m2 gir den større utvalgsstørrelsen mer reliable resultater, mens m1 preges av større grad av usikkerhet som følge av den begrensede utvalgsstørrelsen.
+
+Standardfeil (SE) M2 har en betydelig mindre standardfeil enn m1. Dette skyldes igjen den økte utvalgsstørrelsen. En mindre standardfeil indikerer større presisjon i estimatene. I m1, med sin større standardfeil, er estimatet mindre reliabelt og nøyaktig.
+
+t-verdi og p-verdi t-verdiene og p-verdiene er sterkt påvirket av både utvalgsstørrelsen og standardfeilen. I m2 har den større utvalgsstørrelsen og mindre standardfeilen resultert i en vesentlig høyere t-verdi og en svært lav p-verdi, som indikerer en høy grad av statistisk signifikans. I kontrast til dette har m1, med sin begrensede utvalgsstørrelse og større standardfeil, en lavere t-verdi og en p-verdi som indikerer manglende statistisk signifikans.
+
+Estimat (Koeffisient) Forskjellen i estimatene (koeffisientene) i m1 og m2 indikerer også betydelige endringer i gjennomsnittsverdiene mellom de to behandlingene. Dette er direkte relatert til utvalgsstørrelsen og nøyaktigheten til estimatene.
+
+I konklusjon, de viktigste faktorene som bidrar til de ulike resultatene i de to studiene (m1 og m2), er utvalgsstørrelsen og standardfeilen. En større utvalgsstørrelse gir mer nøyaktige estimater og øker sjansen for å oppdage statistisk signifikante forskjeller. Derfor bør utvalgsstørrelsen vurderes nøye i enhver statistisk analyse for å sikre reliable resultater.
+
+**Spørsmål 3 - Why do we use the shaded area in the lower and upper tail of the t-distribution**
+
+I statistisk analyse benyttes det ofte t-fordeling for å utføre hypotesetesting og for å vurdere statistisk signifikans. Figuren illustrerer sannsynlighetsfordelingen for t-verdier. Skyggeområdet i både den nedre og øvre halen av t-fordelingen representerer områder der vi gjennomførte hypotesetesting og vurderer signifikans. Her er hvorfor vi brukte disse skyggeområdene:
+
+Hypotesetesting I hypotesetesting sammenligner vi normalt en teststatistikk, som en t-verdi, med en kritisk verdi for å avgjøre om vi skal avvise eller ikke avvise nullhypotesen. Nullhypotesen antar at det ikke er noen signifikant forskjell eller effekt, mens alternativhypotesen antyder en signifikant forskjell. Skyggeområdet representerer de områdene i t-fordelingen der vi vil avvise nullhypotesen, gitt at teststatistikken faller innenfor disse områdene. Med andre ord, om teststatistikken er ekstrem nok til å falle i det øvre eller nedre haleområdet, tolker vi dette som evidens for at det er en signifikant effekt.
+
+Signifikansnivå og p-verdi: Skyggeområdene i t-fordelingen er også knyttet til valget av signifikansnivå (alfa-nivå) i hypotesetesting. Eksempelvis, om signifikansnivået er satt til 0,05 (5 %), vil skyggeområdene i hver hale representerer de ekstreme 2,5 % av t-verdiene i den øvre halen og de lavere 2,5% i den nedre halen. p-verdien, som er beregnet ut fra teststatistikken, sammenligner hvor godt testresultatene sammenfaller med disse skyggeområdene. En lav p-verdi (mindre enn alfa-nivået) indikerer statistisk signifikans og støtter avvisning av nullhypotesen.
+
+To-sidige tester For noen hypotesetester er det nødvendig å bruke både den øvre og den nedre halen av t-fordelingen, for eksempel i tosidige tester. I tosidige tester en etter ekstreme verdier i begge retninger av fordelingen. De to skyggområdene representerer disse to retningene, og vi sammenligner teststatistikken med dem for å vurdere signifikans i begge retninger.
+
+Sammenfattende brukes skyggeområdene i t-fordelingen for å veilede vurderingen av hypoteser og signifikans. De indikerer de ekstreme regionene der vi avviser nullhypotesen når teststatistikken er ekstrem nok. Valget av alfa-nivå sammen med dette skyggeområde bidrar til en konsistent og objektiv tilnærming til hypotesetesting i statistiske analyser.
+
 ```{r}
-# Create data frames to store the model estimates
+
+
 results_8 <- data.frame(estimate = rep(NA, 1000), 
                       se = rep(NA, 1000), 
                       pval = rep(NA, 1000), 
@@ -36,8 +85,6 @@ results_40 <- data.frame(estimate = rep(NA, 1000),
                       pval = rep(NA, 1000), 
                       n = 40)
 
-# A for loop used to sample 1000 studies, each iteration (i) will draw a new sample
-# from the population. 
 
 for(i in 1:1000) {
   
@@ -62,40 +109,60 @@ for(i in 1:1000) {
 }
 
 
-# Save the results in a combined data frame
 
 results <- bind_rows(results_8, results_40)
+
 ```
 
+**Spørsmål 4 - Calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?**
+
+For hvert av de to studiestørrelsene (n = 8 og n = 40), har vi beregnet standardavviket for estimatvariabelen og gjennomsnittet for standardfeilvariabelen. Følgende resultater ble observert: Standardavviket for estimatvariabelen (n = 8): 1,04 Standardavviket for estimatvariabelen (n = 40): 0,48 Gjennomsnittet for standardfeilvariabelen (n = 8): 1,04 Gjennomsnittlig standardfeilvariabelen (n = 40): 0,47
+
+Standardavvikene for estimatene er svært like for de to forskjellige studiestørrelsene, til tross for at de beregner estimatene fra ulike mengder data. Dette kan forklares ved at estimatene er basert på en stor nok populasjon (én million verdier) og at tilfeldige variasjoner i utvalgene kompenseres når det tas mange utvalg. Med andre ord, estimatene er konsistente, uavhengig av utvalgsstørrelsen.
+
+Standardfeil kan defineres som et mål på usikkerheten eller variabiliteten i et estimat. Når vi ser på resultatene her, ser vi at gjennomsnittlig standardfeil er relativt lik for både n = 8 og n = 40, noe som indikerer at usikkerheten i estimatene er relativt konstant, uavhengig av studiestørrelsen. Dette er en viktig egenskap ved standardfeil, ettersom det gir oss en idé om hvor nøyaktige eller presise våre estimater er. Når standardfeilen er lav, indikerer det en høy grad av presisjon i estimatene, mens høy standardfeil indikerer større usikkerhet. I dette tilfellet, til tross for forskjellige studiestørrelser, er standardfeilen relativt lik, noe som tyder på en konsekvent grad av presisjon i estimatene.
+
 ```{r}
-library(pwr)
 
-# Example code for copy and paste
+#Histogram
 
-# A two facets histogram can be created with ggplot2
 results %>%
   ggplot(aes(pval)) + 
   geom_histogram() +
   facet_wrap(~ n)
 
 
-# Count the proportion of tests below a certain p-value for each 
 results %>%
   filter(pval < 0.05) %>%
   group_by(n) %>%
   summarise(sig_results = n()/1000)
 
-# Using the pwr package
-library(pwr)
-
 pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
+
 ```
 
-```{r}
-# Set your significance level (alpha)
-alpha <- 0.05  # Change this to your desired significance level
+**Spørsmål 5 - Create a histogram of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?**
 
-# Count the number of significant studies for each sample size
+Histogram for n = 8 Histogrammet viser en fordeling der de fleste p-verdiene er relativt høye, og det er en tendens til at de konsentrerer seg rundt verdier nær 1. Dette indikerer at for studiestørrelsen n = 8, er p-verdiene hovedsakelig høye, noe som betyr at resultatene har begrenset statistisk signifikans. Effekten av behandlingen kan derfor være vanskelig å påvise med denne studiestørrelsen.
+
+Histogram for n = 40 I dette histogrammet er fordelingen av p-verdiene annerledes. De fleste p-verdiene er nå lavere, og de er konsentrert rundt verdier nær 0. Dette indikerer at for studiestørrelsen n = 40, har resultatene en tendens til å ha lavere p-verdier, hvilket antyder at de har større statistisk signifikans. Effekten av behandlingen er derfor lettere å påvise med denne studiestørrelsen.
+
+Histogrammene av p-verdiene illustrerer effekten av studiestørrelsen på statistisk styrke. Med en større studiestørrelse (n = 40), har analysen større styrke til å oppdage effekten. Som følge av dette gir den lavere p-verdier som indikerer større statistisk signifikans. Med en mindre studiestørrelse (n = 8), er analysen mindre i stand til å påvise effekten. Videre resulterer dette i høyere p-verdier og begrenset statistisk signifikans. Dette underbygger viktigheten av å velge riktig studiestørrelse for å oppnå reliable og signifikante resultater i statistiske analyser.
+
+**Spørsmål 6 - Calculate the number of studies from each sample size that declare a statistically significant effect (specify a threshold for your significance level)**
+
+For studiestørrelse n = 8: Antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05 var 42.
+
+For studiestørrelse n = 40: Antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05 var 54.
+
+Dette betyr at 42 studier med en studiestørrelse på 8, samt 54 studier med en studiestørrelse på 40 viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 0,05.
+
+```{r}
+
+# Utreging av hvor mange er innafor alpha
+alpha <- 0.05 
+
+
 significant_studies_8 <- sum(results_8$pval <= alpha)
 significant_studies_40 <- sum(results_40$pval <= alpha)
 
@@ -105,20 +172,79 @@ cat("Number of significant studies with n=40:", significant_studies_40, "\n")
 
 ```
 
-```{r}
-library(dplyr)
+**Spørsmål 7 - Using the pwr package, calculate the power of a one-sample t-test, with an effect size of 1.5/3, your specified significance level, and sample sizes 8 and 40. Explain the results in the light of your simulations**
 
-# Calculate the standard deviation of the estimate variable for each sample size
+Statistisk styrke for n = 8 For n = 8 var den statistiske styrken 0,23, noe som betyr at det er en 23 % sjanse for å observere en signifikant effekt med den angitte effektstørrelsen (1,5/3), signifikansnivået 0,05 og en studiestørrelse på 8. Dette indikerer at med en studiestørrelse på 8, er sannsynligheten for å oppdage effekten relativt lav, og den statistiske styrken er begrenset.
+
+Statistisk styrke for n = 8 For n = 8 var den statistiske styrken 0,87, som betyr at det er en høy sannsynlighet (87 %) for å observere en signifikant effekt med den angitte effektstørrelsen, signifikansnivået 0,05 og en studiestørrelse på 40. Dette indikerer at med en større studiestørrelse på 40, er sannsynligheten for å oppdage effekten betydelig høyere, og den statiske styrken er derfor sterk.
+
+Resultatene av styrkeberegningen er i tråd med simuleringene. Med en liten studiestørrelse (n = 8), er den statistiske styrken begrenset, og det er en lav sannsynlighet for å oppdage effekten. Dette er i tråd med observasjonen av høye p-verdier og begrenset statistisk signifikans i simuleringene med n = 8. Med en større studiestørrelse (n = 40), øker den statistiske styrken betydelig, og det er en høy sannsynlighet for å oppdage effekten. Dette er i samsvar med simuleringene som viste lavere p-verdier og økt statistisk signifikans for n = 40. Studiestørrelsen spiller dermed en viktig rolle i å påvirke statistisk styrke og evnen til å oppdage statistisk signifikante effekter.
+
+```{r}
+# standard deviation and average of the se variable
+
 std_dev_est_8 <- sd(results_8$estimate)
 std_dev_est_40 <- sd(results_40$estimate)
 
-# Calculate the average of the se variable for each sample size
+
 avg_se_8 <- mean(results_8$se)
 avg_se_40 <- mean(results_40$se)
 
-# Print the results
+
 cat("Standard Deviation of Estimate (n=8):", std_dev_est_8, "\n")
 cat("Standard Deviation of Estimate (n=40):", std_dev_est_40, "\n")
 cat("Average SE (n=8):", avg_se_8, "\n")
 cat("Average SE (n=40):", avg_se_40, "\n")
+
 ```
+
+```{r}
+population <- rnorm(1000000, mean = 0, sd = 3)
+
+
+# Create data frames to store the model estimates
+results_8 <- data.frame(estimate = rep(NA, 1000), 
+                      se = rep(NA, 1000), 
+                      pval = rep(NA, 1000), 
+                      n = 8)  
+
+results_40 <- data.frame(estimate = rep(NA, 1000), 
+                      se = rep(NA, 1000), 
+                      pval = rep(NA, 1000), 
+                      n = 40)
+ 
+
+for(i in 1:1000) {
+  
+  # Draw a sample 
+  samp1 <- data.frame(y = sample(population, 8, replace = FALSE))
+  samp2 <- data.frame(y = sample(population, 40, replace = FALSE))
+
+  # Model the data
+  m1 <- lm(y ~ 1, data = samp1)
+  m2 <- lm(y ~ 1, data = samp2)
+  
+  # Extract values from the models
+  results_8[i, 1] <- coef(summary(m1))[1, 1]
+  results_8[i, 2] <- coef(summary(m1))[1, 2]
+  results_8[i, 3] <- coef(summary(m1))[1, 4]
+
+  results_40[i, 1] <- coef(summary(m2))[1, 1]
+  results_40[i, 2] <- coef(summary(m2))[1, 2]
+  results_40[i, 3] <- coef(summary(m2))[1, 4]
+  
+  
+}
+
+
+results_null <- bind_rows(results_8, results_40)
+
+```
+
+**Spørsmål 8 - With a significance level of 5%, how many studies would give you a "false positive" result if you did many repeated studies?**
+
+Et signifikansnivå (alfa) på 5 % indikerer at vi er villige til å akseptere en feilmargin på 5 % for falske positive resultater. Med andre ord, det er en sjanse på 5% for å konkludere med at det er en effekt når det faktisk ikke er noen effekt (falsk positiv).
+
+I våre simuleringer med n = 8 og n = 40, har vi allerede beregnet antall studier som viste en statistisk signifikant effekt ved et signifikansnivå (alfa) på 5 %. For n = 8 var det 42 studier, og for n = 40 var det 54 studier.
+
+Med et signifikansnivå på 5 %, hvis vi utførte mange gjentatte studier, ville 42 for n = 8, samt 54 av n = 40 gi oss falske positive resultater. Dette er antallet studier som feilaktig konkluderer med en signifikant effekt når det faktisk ikke er noen effekt. Det er viktig å være oppmerksom på at valget av signifikansnivå på 5 % innebærer aksept av en viss sjanse for falske positive resultater.
