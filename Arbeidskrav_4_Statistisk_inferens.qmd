@@ -1,0 +1,124 @@
+---
+title: "arbeidskrav 4"
+format: html
+editor: visual
+---
+
+## Quarto
+
+```{r}
+library(tidyverse)
+
+set.seed(1)
+population <- rnorm(1000000, mean = 1.5, sd = 3)
+
+
+samp1 <- data.frame(y = sample(population, 8, replace = FALSE))
+
+samp2 <- data.frame(y = sample(population, 40, replace = FALSE))
+
+
+m1 <- lm(y ~ 1, data = samp1)
+m2 <- lm(y ~ 1, data = samp2)
+
+summary(m1)
+```
+
+```{r}
+# Create data frames to store the model estimates
+results_8 <- data.frame(estimate = rep(NA, 1000), 
+                      se = rep(NA, 1000), 
+                      pval = rep(NA, 1000), 
+                      n = 8)  
+
+results_40 <- data.frame(estimate = rep(NA, 1000), 
+                      se = rep(NA, 1000), 
+                      pval = rep(NA, 1000), 
+                      n = 40)
+
+# A for loop used to sample 1000 studies, each iteration (i) will draw a new sample
+# from the population. 
+
+for(i in 1:1000) {
+  
+  # Draw a sample 
+  samp1 <- data.frame(y = sample(population, 8, replace = FALSE))
+  samp2 <- data.frame(y = sample(population, 40, replace = FALSE))
+
+  # Model the data
+  m1 <- lm(y ~ 1, data = samp1)
+  m2 <- lm(y ~ 1, data = samp2)
+  
+  # Extract values from the models
+  results_8[i, 1] <- coef(summary(m1))[1, 1]
+  results_8[i, 2] <- coef(summary(m1))[1, 2]
+  results_8[i, 3] <- coef(summary(m1))[1, 4]
+
+  results_40[i, 1] <- coef(summary(m2))[1, 1]
+  results_40[i, 2] <- coef(summary(m2))[1, 2]
+  results_40[i, 3] <- coef(summary(m2))[1, 4]
+  
+  
+}
+
+
+# Save the results in a combined data frame
+
+results <- bind_rows(results_8, results_40)
+```
+
+```{r}
+library(pwr)
+
+# Example code for copy and paste
+
+# A two facets histogram can be created with ggplot2
+results %>%
+  ggplot(aes(pval)) + 
+  geom_histogram() +
+  facet_wrap(~ n)
+
+
+# Count the proportion of tests below a certain p-value for each 
+results %>%
+  filter(pval < 0.05) %>%
+  group_by(n) %>%
+  summarise(sig_results = n()/1000)
+
+# Using the pwr package
+library(pwr)
+
+pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
+```
+
+```{r}
+# Set your significance level (alpha)
+alpha <- 0.05  # Change this to your desired significance level
+
+# Count the number of significant studies for each sample size
+significant_studies_8 <- sum(results_8$pval <= alpha)
+significant_studies_40 <- sum(results_40$pval <= alpha)
+
+cat("Number of significant studies with n=8:", significant_studies_8, "\n")
+cat("Number of significant studies with n=40:", significant_studies_40, "\n")
+
+
+```
+
+```{r}
+library(dplyr)
+
+# Calculate the standard deviation of the estimate variable for each sample size
+std_dev_est_8 <- sd(results_8$estimate)
+std_dev_est_40 <- sd(results_40$estimate)
+
+# Calculate the average of the se variable for each sample size
+avg_se_8 <- mean(results_8$se)
+avg_se_40 <- mean(results_40$se)
+
+# Print the results
+cat("Standard Deviation of Estimate (n=8):", std_dev_est_8, "\n")
+cat("Standard Deviation of Estimate (n=40):", std_dev_est_40, "\n")
+cat("Average SE (n=8):", avg_se_8, "\n")
+cat("Average SE (n=40):", avg_se_40, "\n")
+```
